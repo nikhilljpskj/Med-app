@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medicine Details</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            background: linear-gradient(to right, #2c3e50, #4a6271);
+            justify-content: center;
+            height: 100vh;
+        }
+
+        .medicine-container {
+            background-color: #fff;
+            border-radius: 60px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+        }
+
+        .medicine-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .medicine-price {
+            font-size: 20px;
+            color: #e74c3c;
+            margin-bottom: 15px;
+        }
+
+        .medicine-usage {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .action-buttons {
+            display: flex;
+            flex-direction: column; /* Updated to a column layout */
+        }
+
+        .action-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 30px;
+            font-size: 16px;
+            border: none;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            margin-bottom: 10px;
+        }
+
+        .action-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Buyer Details Form Styles */
+        .buyer-form {
+            display: none;
+            flex-direction: column;
+        }
+
+        .form-input {
+            margin-bottom: 10px;
+            padding: 8px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+
+        .form-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .form-button:hover {
+            background-color: #2980b9;
+        }
+
+        /* Payment Page Styles */
+        .payment-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            display: none;
+        }
+
+        .payment-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .payment-options {
+            display: flex;
+            justify-content: space-around;
+            margin-top: 20px;
+        }
+
+        .payment-option {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .payment-option:hover {
+            background-color: #2980b9;
+        }
+
+        /* Cart Page Styles */
+        .cart-container {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            display: none;
+        }
+
+        .cart-title {
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            margin-bottom: 15px;
+        }
+
+        .cart-items {
+            text-align: left;
+            margin-bottom: 20px;
+        }
+
+        .cart-item {
+            font-size: 16px;
+            margin-bottom: 10px;
+        }
+
+        .delivery-info {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .checkout-button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            font-size: 16px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .checkout-button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="medicine-container">
+        <div class="medicine-title">Paracetamol</div>
+        <div class="medicine-price">Price: $10.99</div>
+        <div class="medicine-usage">
+            <p>
+                Lorem ipsum dolor sit amet, consectetur adipiscing elit.
+                Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.
+            </p>
+        </div>
+        <div class="action-buttons">
+            <button class="action-button" onclick="showBuyerForm()">Buy</button>
+            <div class="buyer-form" id="buyer-form">
+                <input type="text" class="form-input" placeholder="Name" id="buyer-name">
+                <input type="text" class="form-input" placeholder="Address" id="buyer-address">
+                <input type="text" class="form-input" placeholder="Pincode" id="buyer-pincode">
+                <input type="text" class="form-input" placeholder="Landmark" id="buyer-landmark">
+                <button class="form-button" onclick="buyMedicine()">Submit</button>
+            </div>
+            <button class="action-button" onclick="addToCart()">Add to Cart</button>
+            <button class="action-button" onclick="checkoutCart()">Checkout Cart</button>
+        </div>
+    </div>
+
+    <div id="payment-container" class="payment-container">
+        <div class="payment-title">Select Payment Method</div>
+        <div class="payment-options">
+            <button class="payment-option" onclick="payCashOnDelivery()">Cash on Delivery</button>
+            <button class="payment-option" onclick="payOnline()">Online Payment</button>
+        </div>
+    </div>
+
+    <div id="cart-container" class="cart-container">
+        <div class="cart-title">Shopping Cart</div>
+        <div class="cart-items" id="cart-items">
+            <!-- Cart items will be displayed here -->
+        </div>
+        <div class="delivery-info">Delivery Information: Your items will be delivered to your address.</div>
+
+    </div>
+
+    <script>
+        function showBuyerForm() {
+            // Show the buyer details form
+            document.getElementById('buyer-form').style.display = 'flex';
+        }
+
+        function buyMedicine() {
+            // Implement logic for buying medicine (redirect to payment page)
+            var buyerName = document.getElementById('buyer-name').value;
+            var buyerAddress = document.getElementById('buyer-address').value;
+            var buyerPincode = document.getElementById('buyer-pincode').value;
+            var buyerLandmark = document.getElementById('buyer-landmark').value;
+
+            if (buyerName && buyerAddress && buyerPincode && buyerLandmark) {
+            // Store buyer details
+            buyerDetails = {
+                name: buyerName,
+                address: buyerAddress,
+                pincode: buyerPincode,
+                landmark: buyerLandmark
+            };
+                // Proceed with the purchase
+                document.getElementById('payment-container').style.display = 'block';
+                document.getElementById('cart-container').style.display = 'none';
+            } else {
+                // Show an alert or handle the case when the form is incomplete
+                alert('Please fill in all the details.');
+            }
+        }
+
+    function addToCart() {
+        // Implement logic for adding medicine to the cart
+        var cartItems = document.getElementById('cart-items');
+        var newItem = document.createElement('div');
+        newItem.className = 'cart-item';
+
+        // Display buyer details in the cart item
+        newItem.innerHTML = `
+            <p>${buyerDetails.name}</p>
+            <p>${buyerDetails.address}</p>
+            <p>${buyerDetails.pincode}</p>
+            <p>${buyerDetails.landmark}</p>
+            <hr>
+            <p>Medicine X - $10.99</p>
+        `;
+
+        cartItems.appendChild(newItem);
+    }
+
+        function checkoutCart() {
+            // Implement logic for checking out the cart (redirect to cart page)
+            document.getElementById('payment-container').style.display = 'none';
+            document.getElementById('cart-container').style.display = 'block';
+
+
+
+
+        }
+
+        function payCashOnDelivery() {
+            // Implement logic for cash on delivery payment
+            alert('Payment Successful! Your items will be delivered soon.');
+        }
+
+        function payOnline() {
+            // Implement logic for online payment
+            alert('Redirecting to Online Payment Gateway...');
+        }
+
+        function openCart() {
+            // Implement logic for opening the cart
+            alert('Opening Shopping Cart...');
+        }
+
+
+
+<!-- Medicine Details (medidetail.html) -->
+
+
+    // Function to get query parameters from the URL
+    function getQueryParam(name) {
+        const urlParams = new URLSearchParams(window.location.search);
+        return urlParams.get(name);
+    }
+
+    // Function to initialize the page with the searched medicine name
+    function initializePage() {
+        // Get the medicine name from the query parameter
+        var medicineName = getQueryParam('medicine');
+
+        // Display the medicine name in the container
+        document.querySelector('.medicine-title').innerText = medicineName;
+    }
+
+    // Call the initializePage function when the page loads
+    window.onload = initializePage;
+
+
+<!-- Rest of your existing HTML code for Medicine Details page -->
+
+
+
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Unapproved Medical Stores</title>
+</head>
+<body>
+    <h1>Unapproved Medical Stores</h1>
+
+    {% if unapproved_stores %}
+        <ul>
+            {% for store in unapproved_stores %}
+                <li>
+                    {{ store.name }} - Registration Number: {{ store.registration_number }}
+                    <form method="post" action="{% url 'approve_medical_store' store.id %}">
+                        {% csrf_token %}
+                        <button type="submit">Approve</button>
+                    </form>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No unapproved medical stores.</p>
+    {% endif %}
+</body>
+</html>

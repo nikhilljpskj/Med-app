@@ -1,0 +1,85 @@
+<!-- register_medical_store.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Store Registration</title>
+     <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            background: linear-gradient(45deg, #1a1a1a, #fff);
+            color: #ffff;
+        }
+
+        .registration-container {
+            background: linear-gradient(45deg, #3498db, #2c3e50);
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 400px;
+            text-align: center;
+        }
+
+        .registration-container h2 {
+            color: #fff;
+            padding: 30px;
+            width: 400px;
+        }
+
+        .registration-form {
+            margin-top: 20px;
+        }
+
+        .registration-form input {
+            width: 100%;
+            padding: 20px;
+            margin-bottom: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background-color: rgba(255, 255, 255, 0.8); /* Adjust the alpha value for transparency */
+            color: #333; /* Text color on the input field */
+        }
+
+        .registration-form button {
+            background-color: #3498db;
+            color: #fff;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .registration-form button:hover {
+            background-color: #2980b9;
+        }
+    </style>
+</head>
+<body>
+    <div class="registration-container">
+    <h2>Medical Store Registration</h2>
+    <form method="post" action="{% url 'register' %}">
+        {% csrf_token %}
+        <label for="username">Username:</label>
+        <input type="text" name="username" required><br><br>
+
+        <label for="password">Password:</label>
+        <input type="password" name="password" required><br><br>
+
+        <label for="name">Medical Store Name:</label>
+        <input type="text" name="name" required><br><br>
+
+        <label for="registration_number">Registration Number:</label>
+        <input type="text" name="registration_number" required><br>
+
+        <button type="submit">Register</button>
+    </form>
+    </div>
+</body>
+</html>

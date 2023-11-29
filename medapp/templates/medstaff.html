@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Medical Staff</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: linear-gradient(45deg, #1a1a1a, #fff);
+            color: #fff;
+        }
+
+
+        nav {
+            background-color: #444;
+            padding: 1rem;
+            text-align: center;
+        }
+
+        nav a {
+            color: #fff;
+            text-decoration: none;
+            margin: 0 10px;
+        }
+
+        section {
+            padding: 20px;
+            max-width: 800px;
+            margin: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            color: #fff;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #333;
+        }
+
+        form {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            max-width: 300px;
+            margin: auto;
+        }
+
+        label {
+            margin-bottom: 5px;
+        }
+
+        input, button {
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            box-sizing: border-box;
+        }
+
+        .confirmation-message {
+            margin-top: 20px;
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body background="medstaff.jpg">
+    <header>
+       <center> <br><h1>MEDICAL MOCKUP</h1><br><h2>Medical Staff Page</h2></center	>
+    </header>
+
+    <nav>
+        <a href="#">Manage Stores</a>
+        <a href="#">Manage Orders</a>
+        <a href="#">Logout</a>
+    </nav>
+
+    <section>
+        <h2>Manage Stores</h2>
+
+        <table id="storeTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Location</th>
+                    <th>Count</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Display stores from localStorage -->
+            </tbody>
+        </table>
+
+        <h2>Add New Medicine</h2>
+        <form id="addMedicineForm">
+            <label for="medName">Medicine Name:</label>
+            <input type="text" id="medName" name="medName" required>
+        
+            <label for="medUsage">Medicine Usage:</label>
+            <input type="text" id="medUsage" name="medUsage" required>
+        
+            <label for="medQty">Quantity:</label>
+            <input type="text" id="medQty" name="medQty" required>
+        
+            <button type="button" onclick="addMedicine()">Add Medicine</button>
+        </form>
+        
+
+        <!-- Display content after adding a new store -->
+        <div class="confirmation-message" id="addStoreConfirmation"></div>
+
+        <!-- Display content after editing a store -->
+        <div class="confirmation-message" id="editStoreConfirmation"></div>
+
+        <!-- Display content after deleting a store -->
+        <div class="confirmation-message" id="deleteStoreConfirmation"></div>
+    </section>
+
+    <script>
+        // Load existing stores from localStorage on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadStores();
+        });
+
+        function loadStores() {
+            var storeTableBody = document.getElementById('storeTable').getElementsByTagName('tbody')[0];
+            storeTableBody.innerHTML = '';
+
+            // Retrieve stores from localStorage
+            var stores = JSON.parse(localStorage.getItem('stores')) || [];
+
+            // Display stores in the table
+            stores.forEach(function (store) {
+                var newRow = document.createElement('tr');
+                newRow.setAttribute('data-id', store.id);
+                newRow.innerHTML = `
+                    <td>${store.id}</td>
+                    <td>${store.name}</td>
+                    <td>${store.location}</td>
+                     <td>${store.count}</td>
+                    <td>
+                        <button onclick="editStore(${store.id})">Edit</button>
+                        <button onclick="deleteStore(${store.id})">Delete</button>
+                        <button onclick="editCount(${store.id})">Edit Count</button>
+                    </td>
+                `;
+                storeTableBody.appendChild(newRow);
+            });
+        }
+
+        function saveStores(stores) {
+            // Save stores to localStorage
+            localStorage.setItem('stores', JSON.stringify(stores));
+        }
+
+        function editStore(storeId) {
+            // In a real scenario, you might want to open a modal for editing
+            var newName = prompt("Enter the name of the medicine:");
+            var newLocation = prompt("Enter the usage:");
+
+            // Update the stores array with the new data
+            if (newName && newLocation) {
+                var stores = JSON.parse(localStorage.getItem('stores')) || [];
+                var updatedStores = stores.map(function (store) {
+                    if (store.id === storeId) {
+                        return { id: store.id, name: newName, location: newLocation ,count:storeCount};
+                    }
+                    return store;
+                });
+
+                saveStores(updatedStores);
+
+                // Reload stores and display confirmation message
+                loadStores();
+                document.getElementById('editStoreConfirmation').textContent = '';
+            }
+        }
+
+        function deleteStore(storeId) {
+            // In a real scenario, you might want to use a modal or confirmation dialog
+            var confirmDelete = confirm("Are you sure you want to delete this medicine?");
+
+            if (confirmDelete) {
+                // Remove the store from the array
+                var stores = JSON.parse(localStorage.getItem('stores')) || [];
+                var updatedStores = stores.filter(function (store) {
+                    return store.id !== storeId;
+                });
+
+                saveStores(updatedStores);
+            // Reload stores and display confirmation message
+            loadStores();
+            document.getElementById('addStoreConfirmation').textContent = '';
+
+            }
+        }
+
+        function addStore() {
+            var storeName = document.getElementById('storeName').value;
+            var storeLocation = document.getElementById('storeLocation').value;
+            var storeCount = document.getElementById('storeCount').value;
+
+            // Retrieve existing stores from localStorage
+            var stores = JSON.parse(localStorage.getItem('stores')) || [];
+
+            // Generate a unique ID for the new store
+            var newId = Date.now();
+
+            // Create a new store object
+            var newStore = { id: newId, name: storeName, location: storeLocation,count:storeCount };
+
+            // Add the new store to the array
+            stores.push(newStore);
+
+            // Save the updated array to localStorage
+            saveStores(stores);
+
+            // Reload stores and display confirmation message
+            loadStores();
+            document.getElementById('addStoreConfirmation').textContent = '';
+        }
+        // Load existing stores from localStorage on page load
+        document.addEventListener('DOMContentLoaded', function () {
+            loadStores();
+        });
+
+        // Existing functions...
+
+
+
+            function editCount(storeId) {
+        // In a real scenario, you might want to open a modal for editing
+        var newCount = prompt("Enter the new count for the store:");
+
+        // Update the stores array with the new count
+        if (newCount) {
+            var stores = JSON.parse(localStorage.getItem('stores')) || [];
+            var updatedStores = stores.map(function (store) {
+                if (store.id === storeId) {
+                    return { id: store.id, name: store.name, location: store.location, count: newCount };
+                }
+                return store;
+            });
+
+            saveStores(updatedStores);
+
+            // Reload stores and display confirmation message
+            loadStores();
+            document.getElementById('editStoreConfirmation').textContent = '';
+        }
+    }
+
+
+
+
+        function logout() {
+            // Perform logout actions here
+            // For example, you can redirect to a login page
+            window.location.href = 'login.html';
+        }
+    </script>
+</body>
+</html>
